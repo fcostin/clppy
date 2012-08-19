@@ -4,11 +4,14 @@
 #include <coin/ClpSimplex.hpp>
 #include <coin/CoinPackedMatrix.hpp>
 #include <assert.h>
-#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define USE_PRIMAL 0
+#define USE_DUAL 1
+#define USE_BARRIER 2
 
 typedef struct {
     int proven_optimal;

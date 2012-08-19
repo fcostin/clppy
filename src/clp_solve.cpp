@@ -7,10 +7,6 @@ clp_result_t clp_solve(int n_rows, int n_cols, int n_entries,
         const double *vec_x_lo, const double *vec_x_up,
         int optimisation_mode, double *vec_x_soln) {
 
-    // XXX TODO will Coin delete our arrays?!
-
-    printf("clp_solve : 0\n");
-    
     // build column-packed coin sparse matrix from given COO data
     CoinPackedMatrix matrix(true, row_indices, col_indices,
         coeffs, (CoinBigIndex)n_entries);
@@ -22,11 +18,17 @@ clp_result_t clp_solve(int n_rows, int n_cols, int n_entries,
 
     model.setOptimizationDirection(1.0); // minimise
 
-    if (optimisation_mode == 0) {
-        model.primal();
-    } else {
-        model.dual();
+    ClpSolve solve;
+    if (optimisation_mode == USE_PRIMAL) {
+        solve.setSolveType(ClpSolve::usePrimal);
+    } else if (optimisation_mode == USE_DUAL) {
+        solve.setSolveType(ClpSolve::useDual);
+    } else if (optimisation_mode == USE_BARRIER) {
+        solve.setSolveType(ClpSolve::useBarrier);
     }
+    solve.setPresolveType(ClpSolve::presolveOn);
+
+    model.initialSolve(solve);
 
     clp_result_t result;
     result.proven_optimal = model.isProvenOptimal();

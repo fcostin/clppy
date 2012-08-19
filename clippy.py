@@ -6,12 +6,10 @@ import numpy
 from numpy.ctypeslib import ndpointer
 import ctypes
 
-_OPTIMISATION_MODE_PRIMAL = 0
-_OPTIMISATION_MODE_DUAL = 1
-
 OPTIMISATION_MODES = {
-    'primal' : _OPTIMISATION_MODE_PRIMAL,
-    'dual' : _OPTIMISATION_MODE_DUAL,
+    'primal' : 1,
+    'dual' : 1,
+    'barrier' : 2,
 }
 
 class clp_result_t(ctypes.Structure):
