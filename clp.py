@@ -2,15 +2,19 @@
 clp.py : simple python bindings to COIN-OR's CLP library
 """
 
+import ctypes
 import numpy
 from numpy.ctypeslib import ndpointer
-import ctypes
+import os
 
 OPTIMISATION_MODES = {
     'primal' : 1,
     'dual' : 1,
     'barrier' : 2,
 }
+
+# you might want to change this ...
+_LIBRARY_PATH = os.path.join(os.path.dirname(__file__), 'libclpsolve.so')
 
 class _clp_result_t(ctypes.Structure):
     _fields_ = [
@@ -21,7 +25,7 @@ class _clp_result_t(ctypes.Structure):
     ]
 
 
-def _make_clp_solve(library_path = 'libclpsolve.so'):
+def _make_clp_solve(library_path = _LIBRARY_PATH):
     lib = ctypes.CDLL(library_path)
 
     _clp_solve = lib.clp_solve
