@@ -1,5 +1,5 @@
 """
-CLiPPY : simple python bindings to COIN-OR's CLP library
+clp.py : simple python bindings to COIN-OR's CLP library
 """
 
 import numpy
@@ -12,7 +12,7 @@ OPTIMISATION_MODES = {
     'barrier' : 2,
 }
 
-class clp_result_t(ctypes.Structure):
+class _clp_result_t(ctypes.Structure):
     _fields_ = [
         ('proven_optimal', ctypes.c_int),
         ('proven_primal_infeasible', ctypes.c_int),
@@ -21,7 +21,7 @@ class clp_result_t(ctypes.Structure):
     ]
 
 
-def _make_clp_solve(library_path = 'src/libclpsolve.so'):
+def _make_clp_solve(library_path = 'libclpsolve.so'):
     lib = ctypes.CDLL(library_path)
 
     _clp_solve = lib.clp_solve
@@ -40,10 +40,10 @@ def _make_clp_solve(library_path = 'src/libclpsolve.so'):
         ctypes.c_int,
         ndpointer(dtype = numpy.float64),
     ]
-    _clp_solve.restype = clp_result_t
+    _clp_solve.restype = _clp_result_t
 
     def clp_solve(((m, n), (a_rows, a_cols, a_coeffs)), c, b_lo, b_up, x_lo,
-            x_up, optimisation_mode='primal'):
+            x_up, optimisation_mode='barrier'):
         """
         Solve given LP via CLP
 
@@ -53,7 +53,7 @@ def _make_clp_solve(library_path = 'src/libclpsolve.so'):
             c : cost vector, length n
             b_lo, b_up : lower and upper bounds on Ax, length m
             x_lo, x_up : lower and upper bounds on x, length n
-            optimisation_mode : optional, either 'primal' or 'dual'
+            optimisation_mode : optional, either 'primal', 'dual' or 'barrier'
         return value:
             {
                 'proven_optimal' : bool

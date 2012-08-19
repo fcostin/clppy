@@ -6,6 +6,7 @@ LIBS := -L$(COINLIBDIR) -lClp -lCoinUtils -lm -lstdc++
 
 
 all: libclpsolve.so
+	cp libclpsolve.so ..
 .PHONY: all
 
 libclpsolve.so:	clp_solve.o
