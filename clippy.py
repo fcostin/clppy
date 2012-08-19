@@ -31,16 +31,16 @@ def _make_clp_solve(library_path = 'src/libclpsolve.so'):
         ctypes.c_int,
         ctypes.c_int,
         ctypes.c_int,
-        ndpointer(dtype = numpy.int_),
-        ndpointer(dtype = numpy.int_),
-        ndpointer(dtype = numpy.float_),
-        ndpointer(dtype = numpy.float_),
-        ndpointer(dtype = numpy.float_),
-        ndpointer(dtype = numpy.float_),
-        ndpointer(dtype = numpy.float_),
-        ndpointer(dtype = numpy.float_),
+        ndpointer(dtype = numpy.int32),
+        ndpointer(dtype = numpy.int32),
+        ndpointer(dtype = numpy.float64),
+        ndpointer(dtype = numpy.float64),
+        ndpointer(dtype = numpy.float64),
+        ndpointer(dtype = numpy.float64),
+        ndpointer(dtype = numpy.float64),
+        ndpointer(dtype = numpy.float64),
         ctypes.c_int,
-        ndpointer(dtype = numpy.float_),
+        ndpointer(dtype = numpy.float64),
     ]
     _clp_solve.restype = clp_result_t
 
@@ -66,21 +66,21 @@ def _make_clp_solve(library_path = 'src/libclpsolve.so'):
             }
         """
 
-        a_rows = numpy.asarray(a_rows, dtype=numpy.int_)
-        a_cols = numpy.asarray(a_cols, dtype=numpy.int_)
-        a_coeffs = numpy.asarray(a_coeffs, dtype=numpy.float_)
-        c = numpy.asarray(c, dtype=numpy.float_)
-        b_lo = numpy.asarray(b_lo, dtype=numpy.float_)
-        b_up = numpy.asarray(b_up, dtype=numpy.float_)
-        x_lo = numpy.asarray(x_lo, dtype=numpy.float_)
-        x_up = numpy.asarray(x_up, dtype=numpy.float_)
+        a_rows = numpy.asarray(a_rows, dtype=numpy.int32)
+        a_cols = numpy.asarray(a_cols, dtype=numpy.int32)
+        a_coeffs = numpy.asarray(a_coeffs, dtype=numpy.float64)
+        c = numpy.asarray(c, dtype=numpy.float64)
+        b_lo = numpy.asarray(b_lo, dtype=numpy.float64)
+        b_up = numpy.asarray(b_up, dtype=numpy.float64)
+        x_lo = numpy.asarray(x_lo, dtype=numpy.float64)
+        x_up = numpy.asarray(x_up, dtype=numpy.float64)
 
         n_entries = a_rows.shape[0]
         assert n_entries == a_cols.shape[0] == a_coeffs.shape[0]
         assert c.shape[0] == x_lo.shape[0] == x_up.shape[0] == n
         assert b_lo.shape[0] == b_up.shape[0] == m
 
-        x = numpy.zeros((n, ), dtype = numpy.float_)
+        x = numpy.zeros((n, ), dtype = numpy.float64)
 
         _result = _clp_solve(
             m,
