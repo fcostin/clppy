@@ -1,11 +1,15 @@
 OPT_FLAGS := -O2
 WARN_FLAGS := -Wall -Wextra -Werror -pedantic -Wconversion
 
+COINLIBDIR = /usr/lib
+LIBS := -L$(COINLIBDIR) -lClp -lCoinUtils -lm -lstdc++
+
+
 all: libclpsolve.so
 .PHONY: all
 
 libclpsolve.so:	clp_solve.o
-	$(CC) $(OPT_FLAGS) $(WARN_FLAGS) -shared -Wl,-soname,$@ -o $@ $^
+	$(CC) $(OPT_FLAGS) $(WARN_FLAGS) $(LIBS) -shared -Wl,-soname,$@ -o $@ $^
 
 %.o:	%.cpp
 	$(CC) $(OPT_FLAGS) $(WARN_FLAGS) -fPIC -c $^
